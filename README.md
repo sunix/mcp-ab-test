@@ -91,9 +91,26 @@ means more.
 Note that `--output-format json` only reports final totals, not which tools
 were actually called mid-task. To confirm jdtls-mcp's tools were genuinely
 invoked (as opposed to sitting unused in context, which still costs a little
-just for the tool listing), rerun `02-run-with-jdtls.sh`'s `claude -p` line
-by hand with `--output-format stream-json --verbose` and grep the stream for
-the tool name, or inspect the transcript under `~/.claude/projects/`.
+just for the tool listing), read the run's session transcript. Claude Code
+writes one per session at
+`~/.claude/projects/<project>/<session-id>.jsonl`, where `<project>` is the
+working directory with every non-alphanumeric character replaced by `-` —
+so each run's worktree gets its own directory and there's no session ID to
+track down. Then count the actual `tool_use` blocks with `jq`:
+
+```bash
+f=$(ls -t ~/.claude/projects/-root-codeberg-vidocq-vidocq-workspace-erasmus-run-7-with/*.jsonl | head -1)
+jq -r 'select(.message.content != null)
+     | .message.content[]?
+     | select(.type=="tool_use")
+     | .name' "$f" | sort | uniq -c
+```
+
+A `mcp__jdtls__*` line in that output is an invocation; no such line means
+none. Don't grep the transcript for a literal `"type":"tool_use","name":...`
+string instead — JSON key order isn't stable, and that pattern silently
+missed a real call once. `MAKING-OF.md` ("Getting the detection method
+right") has the details and the verified output.
 
 ## Comparing the code each run produced
 
