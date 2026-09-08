@@ -133,3 +133,8 @@ git branch --list 'run-*' | xargs git branch -D
 Keep the branch (even after removing its worktree) for as long as you might
 still want `04-diff-runs.sh` to reach it — deleting the branch is what
 actually loses the ability to diff that run.
+
+## License
+
+[Eclipse Public License 2.0](LICENSE) — the same license as
+[jdtls-mcp](https://github.com/sunix/jdtls-mcp).
