@@ -1,0 +1,80 @@
+{
+    "is_error": false,
+    "duration_api_ms": 572893,
+    "num_turns": 57,
+    "stop_reason": "end_turn",
+    "session_id": "ce7fa54f-9cbc-48bd-bd8e-85227148ae1f",
+    "total_cost_usd": 3.4255091,
+    "usage": {
+        "input_tokens": 82,
+        "cache_creation_input_tokens": 152631,
+        "cache_read_input_tokens": 5447677,
+        "output_tokens": 58218,
+        "output_tokens_details": {
+            "thinking_tokens": 24537
+        },
+        "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+            "ephemeral_1h_input_tokens": 152631,
+            "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+            {
+                "input_tokens": 2,
+                "output_tokens": 722,
+                "cache_read_input_tokens": 177342,
+                "cache_creation_input_tokens": 557,
+                "cache_creation": {
+                    "ephemeral_5m_input_tokens": 0,
+                    "ephemeral_1h_input_tokens": 557
+                },
+                "type": "message"
+            }
+        ],
+        "speed": "standard"
+    },
+    "modelUsage": {
+        "claude-haiku-4-5-20251001": {
+            "inputTokens": 1799,
+            "outputTokens": 21,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.001904,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty"
+        },
+        "claude-sonnet-5": {
+            "inputTokens": 82,
+            "outputTokens": 58218,
+            "cacheReadInputTokens": 5447677,
+            "cacheCreationInputTokens": 152631,
+            "webSearchRequests": 0,
+            "costUSD": 3.4236051,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "canonicalModel": "claude-sonnet-5",
+            "provider": "firstParty"
+        }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "extra_usage_disabled",
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "M3 is implemented, tested, and documented. Summary of what changed:\n\n**Implementation** (`erasmus-core`):\n- `PathImpl` now accumulates multi-segment paths (`address.city`) via `root()`/`append()` instead of a single fixed node.\n- `PropertyMetadata` gained a `cascaded` flag; `ConstraintMetadataBuilder` detects `@Valid` and keeps a property even with zero constraints of its own.\n- `ConstraintDescriptorImpl.getGroups()` now reads the real `groups()` attribute instead of the hardcoded `Set.of(Default.class)`.\n- New `GroupsSupport` handles the three group mechanics: splitting `validate(bean, groups...)` into independent steps, expanding a single `@GroupSequence` group into its ordered, short-circuiting member list, and computing group-inheritance closure via `getInterfaces()`.\n- `ErasmusValidator` gained a recursive `validateGraph` (DFS with an `IdentityHashMap`-backed \"currently on this path\" set for cycle-safe cascading) and now threads group filtering through `validate`/`validateProperty`/`validateValue`.\n- Fixed a real bug caught while wiring cascading: `getLeafBean()` was always returning the root bean, even for a violation on a cascaded nested bean — now threads the actual owning bean through.\n\n**Tests**: new `CascadingAndGroupsTest` (14 tests) covering cascading, `@Valid`-absence, null cascaded properties, self-referencing and two-node cycles (with timeouts), explicit groups, group inheritance, `@GroupSequence` short-circuiting both ways, and mixed cascading+groups. Full suite: 90 tests, all green; full reactor still builds.\n\n**Docs**: `ROADMAP.md` M3 section updated to ✅ with explicit narrowing (container-element cascading deferred to M4, `@ConvertGroup` and nested/per-class group sequences documented as gaps); new making-of post `doc/making-of/03-cascading-and-groups.md` added and indexed in `MAKING-OF.md`.",
+    "ttft_ms": 2405,
+    "ttft_stream_ms": 1860,
+    "time_to_request_ms": 192,
+    "type": "result",
+    "duration_ms": 731054,
+    "uuid": "347747d4-2ae0-46d9-82ef-5fcd5d457b3e"
+}
